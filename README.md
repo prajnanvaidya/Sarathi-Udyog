@@ -96,16 +96,3 @@ or an image file is missing, so a bad edit can never reach the live site.
 - Content is validated at build time (`src/content.config.ts`); a bad CMS edit fails the
   build instead of reaching the live site.
 - `npm audit` is clean; dependencies are pinned in `package-lock.json`.
-
-## Things still to confirm with the owner
-
-Placeholders currently in `src/data/site.json` / product files — edit when answers arrive:
-
-- Cashew kernel grades and prices; red chilly powder and dry-fruit prices/pack sizes (currently "Ask for price").
-- Delivery charges, dispatch time, minimum order (currently generic wording).
-- Payment methods (currently "UPI (GPay / PhonePe), bank transfer").
-- Business hours (`hours` is empty → hidden).
-- Google Maps share link (`mapsUrl` empty → falls back to a Maps search).
-- Village spelling: the labels say **Kankebettu** (pickles) and **Nankebettu** (new cake label), the old site said Vankebettu / Vankdebettu. Currently "Vankebettu".
-- Whether to show the full door number publicly.
-- Email, Instagram/Facebook (hidden when empty).
