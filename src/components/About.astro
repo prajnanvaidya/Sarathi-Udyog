@@ -27,18 +27,23 @@ const gallery = [
     <div class="about-copy">
       <p class="eyebrow reveal">About Sarathi Udyog</p>
       <h2 id="about-title" class="reveal" style="--delay: 60ms">
-        Recipes people remember, from a home in Udupi
+        From our family in Udupi, to your home
       </h2>
       <div class="reveal" style="--delay: 140ms">
-        <p>
-          Sarathi Udyog is a small family food business from Anjar village in Udupi district, on the Karnataka
-          coast. We bake crisp cashew biscuits and cardamom nankhatai, make oil-free mango pickles the way
-          they have always been made in coastal homes, grind our own red chilly powder, and source premium
-          cashews and dry fruits from the region.
+        <p class="about-lead">
+          Sarathi Udyog is a <em>family-started venture</em>, bringing quality sweets, pickles &amp; dry
+          fruits to your home.
         </p>
         <p>
-          Everything is prepared in small batches with familiar ingredients — no shortcuts, no artificial
-          colours. It is food we serve at our own table, and we are happy to send it to yours.
+          Every product is chosen with care and carefully repacked with hygiene and love, so it reaches you
+          fresh and delicious: crisp cashew biscuits and cardamom nankhatai, soft eggless cake, oil-free mango
+          pickles the way coastal homes have always made them, homemade red chilly powder, and premium cashews
+          and dry fruits.
+        </p>
+        <p>
+          We started at home, and home is still our standard — sealed packs, clear labels with our FSSAI
+          licence number, and only what we would gladly serve at our own table. Wherever you are in India, we
+          are happy to send it to yours.
         </p>
       </div>
       <ul class="founders reveal" style="--delay: 220ms">
@@ -71,6 +76,21 @@ const gallery = [
     margin-top: 18px;
     color: var(--ink-soft);
     font-size: 1.04rem;
+  }
+  /* Opening line set apart as a pull-quote: display face, maroon, gold rule. */
+  .about-copy .about-lead {
+    margin-top: 22px;
+    padding-left: 18px;
+    border-left: 3px solid var(--gold);
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--maroon);
+  }
+  .about-lead em {
+    font-style: italic;
+    color: var(--red-bright);
   }
   .founders {
     list-style: none;
