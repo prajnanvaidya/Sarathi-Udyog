@@ -3,9 +3,21 @@ import Icon from './Icon.astro';
 import { site, whatsappLink, callLink, formatPhone } from '../lib/site';
 
 const steps = [
-  { n: '01', title: 'Pick what you like', text: 'Browse the products above. Every card has an “Order on WhatsApp” button with the product name already filled in.' },
-  { n: '02', title: 'Message us on WhatsApp', text: 'Tell us the quantity and your pincode. We reply with availability, the delivery charge and the total.' },
-  { n: '03', title: 'Pay & relax', text: `Pay by ${site.payment}. We pack it fresh and send you the tracking details.` },
+  {
+    n: '01',
+    title: 'Pick what you like',
+    text: 'Browse the products above. Every card has an “Order on WhatsApp” button with the product name already filled in.',
+  },
+  {
+    n: '02',
+    title: 'Message us on WhatsApp',
+    text: 'Tell us the quantity and your pincode. We reply with availability, the delivery charge and the total.',
+  },
+  {
+    n: '03',
+    title: 'Pay & relax',
+    text: `Pay by ${site.payment}. We pack it fresh and send you the tracking details.`,
+  },
 ];
 ---
 
@@ -13,7 +25,9 @@ const steps = [
   <div class="wrap order-grid">
     <div class="order-copy">
       <p class="eyebrow reveal">Ordering is simple</p>
-      <h2 id="order-title" class="reveal" style="--delay: 60ms">Three steps to your doorstep</h2>
+      <h2 id="order-title" class="reveal" style="--delay: 60ms">
+        Three steps to your doorstep
+      </h2>
       <ol class="steps">
         {steps.map((s, i) => (
           <li class="step reveal" style={`--delay: ${120 + i * 100}ms`}>
@@ -41,10 +55,21 @@ const steps = [
         <h3 id="delivery-title">{site.delivery.headline}</h3>
       </div>
       <ul>
-        <li><Icon name="check" size={18} /> {site.delivery.charges}</li>
-        <li><Icon name="check" size={18} /> {site.delivery.time}</li>
-        {site.delivery.localPickup && <li><Icon name="check" size={18} /> {site.delivery.localPickup}</li>}
-        <li><Icon name="check" size={18} /> Pickles are packed in leak-proof jars and bubble-wrapped for transit.</li>
+        <li>
+          <Icon name="check" size={18} /> {site.delivery.charges}
+        </li>
+        <li>
+          <Icon name="check" size={18} /> {site.delivery.time}
+        </li>
+        {site.delivery.localPickup && (
+          <li>
+            <Icon name="check" size={18} /> {site.delivery.localPickup}
+          </li>
+        )}
+        <li>
+          <Icon name="check" size={18} /> Pickles are packed in leak-proof jars and bubble-wrapped for
+          transit.
+        </li>
       </ul>
       <p class="delivery-note">
         Damaged in transit? Send us a photo on WhatsApp the day it arrives and we’ll make it right.
@@ -55,47 +80,116 @@ const steps = [
 
 <style>
   .order {
-    background:
-      radial-gradient(50% 60% at 100% 0%, rgba(253, 216, 53, .25), transparent 70%),
-      #fff;
+    background: radial-gradient(50% 60% at 100% 0%, rgba(253, 216, 53, 0.25), transparent 70%), #fff;
   }
   .order-grid {
-    display: grid; grid-template-columns: 1.2fr .9fr; gap: clamp(32px, 6vw, 80px); align-items: start;
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
   }
-  .order-copy h2 { margin-top: 14px; }
-  .steps { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 22px; }
-  .step { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; }
+  .order-copy h2 {
+    margin-top: 14px;
+  }
+  .steps {
+    list-style: none;
+    margin: 32px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 22px;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    align-items: start;
+  }
   .step-n {
-    font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;
-    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
-    background: var(--maroon); color: var(--gold-light);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--maroon);
+    color: var(--gold-light);
     box-shadow: 0 0 0 4px var(--cream-2);
   }
-  .step h3 { font-size: 1.2rem; }
-  .step p { margin-top: 6px; color: var(--ink-soft); }
-  .order-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+  .step h3 {
+    font-size: 1.2rem;
+  }
+  .step p {
+    margin-top: 6px;
+    color: var(--ink-soft);
+  }
+  .order-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 34px;
+  }
 
   .delivery {
-    position: sticky; top: 96px;
-    padding: 28px; border-radius: var(--radius-lg);
-    background: var(--maroon); color: #fff;
-    background-image:
-      radial-gradient(60% 50% at 100% 100%, rgba(255, 226, 138, .18), transparent 70%);
+    position: sticky;
+    top: 96px;
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: var(--maroon);
+    color: #fff;
+    background-image: radial-gradient(60% 50% at 100% 100%, rgba(255, 226, 138, 0.18), transparent 70%);
     box-shadow: var(--shadow-lg);
   }
-  .delivery-head { display: flex; align-items: center; gap: 12px; }
-  .delivery-head :global(svg) { color: var(--gold-light); flex: none; width: 28px; height: 28px; }
-  .delivery h3 { color: var(--gold-light); font-size: 1.3rem; }
-  .delivery ul { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 12px; }
-  .delivery li { display: grid; grid-template-columns: auto 1fr; gap: 10px; font-size: .95rem; line-height: 1.5; color: #fff4dc; }
-  .delivery li :global(svg) { color: var(--gold); margin-top: 3px; }
+  .delivery-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .delivery-head :global(svg) {
+    color: var(--gold-light);
+    flex: none;
+    width: 28px;
+    height: 28px;
+  }
+  .delivery h3 {
+    color: var(--gold-light);
+    font-size: 1.3rem;
+  }
+  .delivery ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    display: grid;
+    gap: 12px;
+  }
+  .delivery li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #fff4dc;
+  }
+  .delivery li :global(svg) {
+    color: var(--gold);
+    margin-top: 3px;
+  }
   .delivery-note {
-    margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.18);
-    font-size: .88rem; color: rgba(255, 244, 220, .8); font-style: italic;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 0.88rem;
+    color: rgba(255, 244, 220, 0.8);
+    font-style: italic;
   }
 
   @media (max-width: 900px) {
-    .order-grid { grid-template-columns: 1fr; }
-    .delivery { position: static; }
+    .order-grid {
+      grid-template-columns: 1fr;
+    }
+    .delivery {
+      position: static;
+    }
   }
 </style>

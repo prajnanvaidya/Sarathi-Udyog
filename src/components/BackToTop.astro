@@ -1,0 +1,92 @@
+---
+import Icon from './Icon.astro';
+---
+
+<!-- Floating "back to top" — glassy, bottom-right, appears after scrolling one screen -->
+<a class="to-top" id="to-top" href="#top" aria-label="Back to top" tabindex="-1">
+  <Icon name="arrowUp" size={20} />
+</a>
+
+<style>
+  .to-top {
+    position: fixed;
+    right: clamp(14px, 3vw, 28px);
+    bottom: clamp(18px, 3vw, 28px);
+    z-index: 45;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    color: var(--maroon);
+    background: rgba(255, 250, 240, 0.55);
+    border: 1px solid rgba(230, 180, 34, 0.55);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    box-shadow:
+      0 8px 24px -8px rgba(122, 10, 14, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    opacity: 0;
+    transform: translateY(14px) scale(0.9);
+    pointer-events: none;
+    transition:
+      opacity 0.3s var(--ease),
+      transform 0.3s var(--ease),
+      background 0.2s,
+      color 0.2s;
+  }
+  .to-top.show {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .to-top:hover {
+    background: var(--maroon);
+    color: var(--gold-light);
+    border-color: var(--maroon);
+  }
+  .to-top :global(svg) {
+    transition: transform 0.25s var(--ease);
+  }
+  .to-top:hover :global(svg) {
+    transform: translateY(-2px);
+  }
+
+  /* sit above the mobile order bar */
+  @media (max-width: 760px) {
+    .to-top {
+      bottom: calc(84px + env(safe-area-inset-bottom));
+      width: 44px;
+      height: 44px;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('to-top');
+  if (btn) {
+    let ticking = false;
+    const update = () => {
+      const show = window.scrollY > window.innerHeight * 0.9;
+      btn.classList.toggle('show', show);
+      btn.setAttribute('tabindex', show ? '0' : '-1');
+      ticking = false;
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true },
+    );
+    update();
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  }
+</script>

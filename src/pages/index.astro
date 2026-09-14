@@ -4,6 +4,7 @@ import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import Ticker from '../components/Ticker.astro';
 import Products from '../components/Products.astro';
 import WhyUs from '../components/WhyUs.astro';
 import HowToOrder from '../components/HowToOrder.astro';
@@ -11,6 +12,7 @@ import About from '../components/About.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import StickyOrderBar from '../components/StickyOrderBar.astro';
+import BackToTop from '../components/BackToTop.astro';
 import { site, productImage } from '../lib/site';
 
 // Product structured data (Google rich results). Offers only where a price exists.
@@ -43,7 +45,11 @@ const productLd = await Promise.all(
 const listLd = {
   '@type': 'ItemList',
   name: `${site.name} products`,
-  itemListElement: productLd.map((p, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@id': p['@id'] } })),
+  itemListElement: productLd.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: { '@id': p['@id'] },
+  })),
 };
 ---
 
@@ -51,6 +57,7 @@ const listLd = {
   <Header />
   <main id="main">
     <Hero />
+    <Ticker />
     <Products />
     <WhyUs />
     <HowToOrder />
@@ -59,4 +66,5 @@ const listLd = {
   </main>
   <Footer />
   <StickyOrderBar />
+  <BackToTop />
 </Base>

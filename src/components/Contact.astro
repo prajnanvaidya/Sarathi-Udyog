@@ -13,31 +13,51 @@ import { site, whatsappLink, callLink, formatPhone, fullAddress, mapsLink } from
 
     <div class="contact-grid">
       <a class="ccard ccard-wa reveal" href={whatsappLink()} target="_blank" rel="noopener noreferrer">
-        <span class="ccard-icon"><Icon name="whatsapp" /></span>
+        <span class="ccard-icon">
+          <Icon name="whatsapp" />
+        </span>
         <span class="ccard-label">WhatsApp orders</span>
         <span class="ccard-value">{formatPhone(site.whatsappNumber)}</span>
-        <span class="ccard-hint">Tap to open a chat <Icon name="arrow" size={16} /></span>
+        <span class="ccard-hint">
+          Tap to open a chat <Icon name="arrow" size={16} />
+        </span>
       </a>
 
       <a class="ccard reveal" style="--delay: 80ms" href={callLink}>
-        <span class="ccard-icon"><Icon name="phone" /></span>
+        <span class="ccard-icon">
+          <Icon name="phone" />
+        </span>
         <span class="ccard-label">Call us</span>
         <span class="ccard-value">{formatPhone(site.callNumber)}</span>
         <span class="ccard-hint">{site.hours || 'Ask about bulk orders or pickup'}</span>
       </a>
 
-      <a class="ccard reveal" style="--delay: 160ms" href={mapsLink} target="_blank" rel="noopener noreferrer">
-        <span class="ccard-icon"><Icon name="pin" /></span>
+      <a
+        class="ccard reveal"
+        style="--delay: 160ms"
+        href={mapsLink}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="ccard-icon">
+          <Icon name="pin" />
+        </span>
         <span class="ccard-label">Find us</span>
         <span class="ccard-value ccard-address">
-          {fullAddress.map((line) => <span>{line}</span>)}
+          {fullAddress.map((line) => (
+            <span>{line}</span>
+          ))}
         </span>
-        <span class="ccard-hint">Open in Google Maps <Icon name="arrow" size={16} /></span>
+        <span class="ccard-hint">
+          Open in Google Maps <Icon name="arrow" size={16} />
+        </span>
       </a>
 
       {site.email && (
         <a class="ccard reveal" style="--delay: 240ms" href={`mailto:${site.email}`}>
-          <span class="ccard-icon"><Icon name="mail" /></span>
+          <span class="ccard-icon">
+            <Icon name="mail" />
+          </span>
           <span class="ccard-label">Email</span>
           <span class="ccard-value">{site.email}</span>
         </a>
@@ -47,26 +67,86 @@ import { site, whatsappLink, callLink, formatPhone, fullAddress, mapsLink } from
 </section>
 
 <style>
-  .contact { background: var(--cream-2); }
+  .contact {
+    background: var(--cream-2);
+  }
   .contact-grid {
-    display: grid; gap: 18px;
+    display: grid;
+    gap: 18px;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   }
   .ccard {
-    display: flex; flex-direction: column; gap: 6px;
-    padding: 26px 24px; border-radius: var(--radius-lg);
-    background: #fff; border: 1px solid var(--line); color: var(--ink); text-decoration: none;
-    transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 26px 24px;
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    transition:
+      transform 0.3s var(--ease),
+      box-shadow 0.3s var(--ease),
+      border-color 0.3s;
   }
-  .ccard:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--gold); color: var(--ink); }
+  .ccard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
   .ccard-icon {
-    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px;
-    background: var(--cream-2); color: var(--maroon); margin-bottom: 8px;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--cream-2);
+    color: var(--maroon);
+    margin-bottom: 8px;
   }
-  .ccard-wa .ccard-icon { background: #e4f5f2; color: var(--wa); }
-  .ccard-label { font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mute); }
-  .ccard-value { font-family: var(--font-display); font-weight: 600; font-size: 1.35rem; color: var(--maroon); line-height: 1.25; }
-  .ccard-address { font-family: var(--font-body); font-weight: 500; font-size: 1rem; color: var(--ink); display: grid; gap: 2px; }
-  .ccard-hint { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 10px; font-size: .88rem; color: var(--ink-soft); font-weight: 600; }
-  .ccard-wa .ccard-hint { color: var(--wa); }
+  .ccard-wa .ccard-icon {
+    background: #e4f5f2;
+    color: var(--wa);
+  }
+  .ccard-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .ccard-value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.35rem;
+    color: var(--maroon);
+    line-height: 1.25;
+  }
+  .ccard-address {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--ink);
+    display: grid;
+    gap: 2px;
+  }
+  .ccard-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 10px;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .ccard-wa .ccard-hint {
+    color: var(--wa);
+  }
+  .ccard-wa:hover {
+    border-color: var(--wa);
+    box-shadow: 0 14px 34px -14px rgba(18, 140, 126, 0.45);
+  }
 </style>

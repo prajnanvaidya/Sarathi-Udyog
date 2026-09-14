@@ -6,6 +6,7 @@ import { whatsappLink } from '../lib/site';
 
 const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
 const categories = [...new Set(products.map((p) => p.data.category))];
+const count = (c: string) => products.filter((p) => p.data.category === c).length;
 ---
 
 <section class="section products" id="products" aria-labelledby="products-title">
@@ -17,24 +18,40 @@ const categories = [...new Set(products.map((p) => p.data.category))];
     </div>
 
     <div class="filters reveal" role="group" aria-label="Filter products by category">
-      <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">
+        All <small>{products.length}</small>
+      </button>
       {categories.map((c) => (
-        <button type="button" class="filter" data-filter={c} aria-pressed="false">{c}</button>
+        <button type="button" class="filter" data-filter={c} aria-pressed="false">
+          {c} <small>{count(c)}</small>
+        </button>
       ))}
     </div>
 
     <div class="grid" id="product-grid">
-      {products.map((p, i) => <ProductCard product={p} index={i} />)}
+      {products.map((p, i) => (
+        <ProductCard product={p} index={i} />
+      ))}
     </div>
 
-    <p class="grid-empty" hidden>No products in this category yet.</p>
+    <p class="grid-empty" hidden>
+      No products in this category yet.
+    </p>
 
     <div class="bulk reveal">
       <div>
         <h3>Bulk, wholesale or festival gift packs?</h3>
-        <p>We supply cashews, dry fruits and pickles in larger quantities for shops, offices and celebrations. Tell us what you need.</p>
+        <p>
+          We supply cashews, dry fruits and pickles in larger quantities for shops, offices and celebrations.
+          Tell us what you need.
+        </p>
       </div>
-      <a class="btn btn-primary" href={whatsappLink('a bulk / wholesale quantity')} target="_blank" rel="noopener noreferrer">
+      <a
+        class="btn btn-primary"
+        href={whatsappLink('a bulk / wholesale quantity')}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Icon name="whatsapp" /> Ask for bulk pricing
       </a>
     </div>
@@ -46,67 +63,210 @@ const categories = [...new Set(products.map((p) => p.data.category))];
   <button class="lightbox-close" type="button" data-close aria-label="Close">
     <Icon name="close" />
   </button>
+  <button class="lightbox-nav prev" type="button" data-prev aria-label="Previous product">
+    <Icon name="chevron" />
+  </button>
   <img alt="" />
-  <p class="lightbox-caption"></p>
+  <button class="lightbox-nav next" type="button" data-next aria-label="Next product">
+    <Icon name="chevron" />
+  </button>
+  <p class="lightbox-caption" aria-live="polite"></p>
 </dialog>
 
 <style>
   .products {
-    background:
-      linear-gradient(180deg, var(--cream) 0, #fff 140px),
-      #fff;
+    background: linear-gradient(180deg, var(--cream) 0, #fff 140px), #fff;
   }
   .filters {
-    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
     margin-bottom: clamp(24px, 4vw, 40px);
   }
   .filter {
-    padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line);
-    background: #fff; color: var(--ink-soft); font-weight: 600; font-size: .9rem; cursor: pointer;
-    transition: background .2s, color .2s, border-color .2s, transform .2s var(--ease);
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink-soft);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      transform 0.2s var(--ease);
   }
-  .filter:hover { border-color: var(--gold); color: var(--maroon); transform: translateY(-1px); }
-  .filter.is-active { background: var(--maroon); color: #fff; border-color: var(--maroon); }
+  .filter:hover {
+    border-color: var(--gold);
+    color: var(--maroon);
+    transform: translateY(-1px);
+  }
+  .filter.is-active {
+    background: var(--maroon);
+    color: #fff;
+    border-color: var(--maroon);
+  }
+  .filter small {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-left: 2px;
+  }
+  @media (max-width: 600px) {
+    .filters {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-inline: calc(-1 * var(--gutter));
+      padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar {
+      display: none;
+    }
+    .filter {
+      flex: none;
+    }
+  }
 
   .grid {
-    display: grid; gap: clamp(16px, 2.4vw, 28px);
+    display: grid;
+    gap: clamp(16px, 2.4vw, 28px);
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
   }
-  .grid-empty { text-align: center; color: var(--ink-mute); padding: 40px 0; }
+  .grid-empty {
+    text-align: center;
+    color: var(--ink-mute);
+    padding: 40px 0;
+  }
 
   .bulk {
     margin-top: clamp(36px, 6vw, 64px);
-    display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
-    padding: clamp(22px, 3vw, 32px); border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: clamp(22px, 3vw, 32px);
+    border-radius: var(--radius-lg);
     background: linear-gradient(120deg, var(--cream-2), var(--cream-3));
     border: 1px solid var(--line);
   }
-  .bulk h3 { font-size: 1.35rem; }
-  .bulk p { margin-top: 6px; color: var(--ink-soft); max-width: 58ch; }
+  .bulk h3 {
+    font-size: 1.35rem;
+  }
+  .bulk p {
+    margin-top: 6px;
+    color: var(--ink-soft);
+    max-width: 58ch;
+  }
 
   /* Lightbox */
   .lightbox {
-    border: 0; padding: 0; background: transparent; max-width: min(96vw, 1100px); max-height: 92vh;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    max-width: min(96vw, 1100px);
+    max-height: 92vh;
     overflow: visible;
   }
-  .lightbox::backdrop { background: rgba(51, 21, 11, .82); backdrop-filter: blur(6px); }
-  .lightbox img {
-    max-width: min(96vw, 1100px); max-height: 82vh; width: auto; height: auto; margin: 0 auto;
-    border-radius: var(--radius); background: #fff; box-shadow: var(--shadow-lg);
-    animation: pop .3s var(--ease);
+  .lightbox::backdrop {
+    background: rgba(51, 21, 11, 0.82);
+    backdrop-filter: blur(6px);
   }
-  @keyframes pop { from { opacity: 0; transform: scale(.94); } }
+  .lightbox img {
+    max-width: min(96vw, 1100px);
+    max-height: 82vh;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--shadow-lg);
+    animation: pop 0.3s var(--ease);
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+  }
   .lightbox-caption {
-    text-align: center; color: var(--gold-light); font-family: var(--font-display);
-    font-size: 1.1rem; margin-top: 12px;
+    text-align: center;
+    color: var(--gold-light);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    margin-top: 12px;
   }
   .lightbox-close {
-    position: absolute; right: -6px; top: -14px; z-index: 1;
-    width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
-    background: #fff; color: var(--maroon); display: grid; place-items: center; box-shadow: var(--shadow);
+    position: absolute;
+    right: -6px;
+    top: -14px;
+    z-index: 1;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 0;
+    cursor: pointer;
+    background: #fff;
+    color: var(--maroon);
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow);
+  }
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    z-index: 1;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 0;
+    cursor: pointer;
+    background: rgba(255, 250, 240, 0.9);
+    color: var(--maroon);
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow);
+    transition:
+      background 0.2s,
+      transform 0.2s var(--ease);
+  }
+  .lightbox-nav:hover {
+    background: #fff;
+    transform: scale(1.06);
+  }
+  .lightbox-nav.prev {
+    left: -8px;
+  }
+  .lightbox-nav.prev :global(svg) {
+    rotate: 90deg;
+  }
+  .lightbox-nav.next {
+    right: -8px;
+  }
+  .lightbox-nav.next :global(svg) {
+    rotate: -90deg;
   }
   @media (max-width: 600px) {
-    .lightbox-close { right: 4px; top: 4px; }
+    .lightbox-close {
+      right: 4px;
+      top: 4px;
+    }
+    .lightbox-nav {
+      width: 40px;
+      height: 40px;
+    }
+    .lightbox-nav.prev {
+      left: 4px;
+    }
+    .lightbox-nav.next {
+      right: 4px;
+    }
   }
 </style>
 
@@ -137,25 +297,47 @@ const categories = [...new Set(products.map((p) => p.data.category))];
     });
   });
 
-  // --- Lightbox
+  // --- Lightbox with prev/next over the currently visible products
   const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
   if (dialog && typeof dialog.showModal === 'function') {
     const img = dialog.querySelector('img')!;
     const cap = dialog.querySelector('.lightbox-caption')!;
-    document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((btn) => {
+    const triggers = [...document.querySelectorAll<HTMLButtonElement>('[data-lightbox]')];
+    let current = -1;
+
+    const visible = () => triggers.filter((t) => !t.closest('.product')?.classList.contains('hidden'));
+    const show = (btn: HTMLButtonElement) => {
+      current = triggers.indexOf(btn);
+      img.src = btn.dataset.full || '';
+      img.alt = btn.dataset.alt || '';
+      cap.textContent = btn.dataset.alt || '';
+    };
+    const step = (dir: 1 | -1) => {
+      const list = visible();
+      if (list.length < 2) return;
+      const i = list.indexOf(triggers[current]);
+      show(list[(i + dir + list.length) % list.length]);
+    };
+
+    triggers.forEach((btn) =>
       btn.addEventListener('click', () => {
-        img.src = btn.dataset.full || '';
-        img.alt = btn.dataset.alt || '';
-        cap.textContent = btn.dataset.alt || '';
+        show(btn);
         dialog.showModal();
-      });
-    });
+      }),
+    );
     dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-prev]')?.addEventListener('click', () => step(-1));
+    dialog.querySelector('[data-next]')?.addEventListener('click', () => step(1));
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'ArrowLeft') step(-1);
+    });
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) dialog.close(); // click on backdrop
     });
     dialog.addEventListener('close', () => {
       img.removeAttribute('src');
+      if (current >= 0) triggers[current].focus(); // return focus to the card
     });
   }
 </script>

@@ -10,7 +10,9 @@ const year = new Date().getFullYear();
     <div class="footer-brand">
       <p class="footer-name">Sarathi Udyog</p>
       <p class="footer-tag">{site.tagline}</p>
-      <p class="footer-fssai"><Icon name="shield" size={16} /> FSSAI Lic. No. {site.fssai}</p>
+      <p class="footer-fssai">
+        <Icon name="shield" size={16} /> FSSAI Lic. No. {site.fssai}
+      </p>
       {site.gst && <p class="footer-fssai">GSTIN {site.gst}</p>}
     </div>
 
@@ -22,46 +24,115 @@ const year = new Date().getFullYear();
     </nav>
 
     <div class="footer-contact">
-      <a href={whatsappLink()} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" size={18} /> {formatPhone(site.whatsappNumber)}</a>
-      <a href={callLink}><Icon name="phone" size={18} /> {formatPhone(site.callNumber)}</a>
-      {site.social.instagram && <a href={site.social.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>}
-      {site.social.facebook && <a href={site.social.facebook} target="_blank" rel="noopener noreferrer">Facebook</a>}
+      <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+        <Icon name="whatsapp" size={18} /> {formatPhone(site.whatsappNumber)}
+      </a>
+      <a href={callLink}>
+        <Icon name="phone" size={18} /> {formatPhone(site.callNumber)}
+      </a>
+      {site.social.instagram && (
+        <a href={site.social.instagram} target="_blank" rel="noopener noreferrer">
+          Instagram
+        </a>
+      )}
+      {site.social.facebook && (
+        <a href={site.social.facebook} target="_blank" rel="noopener noreferrer">
+          Facebook
+        </a>
+      )}
     </div>
   </div>
   <div class="wrap footer-bottom">
-    <p>© {year} {site.name}, {site.address.line3}, {site.address.state}. All products are 100% vegetarian.</p>
-    <a class="to-top" href="#top" aria-label="Back to top"><Icon name="arrowUp" size={18} /></a>
+    <p>
+      © {year} {site.name}, {site.address.line3}, {site.address.state}. All products are 100% vegetarian.
+    </p>
+    <p class="made">
+      Made with <span aria-hidden="true">♥</span>
+      <span class="sr-only">love</span> in Udupi
+    </p>
   </div>
 </footer>
 
 <style>
-  .footer { background: #2a0507; color: #e9d3a3; }
-  .footer .gold-rule { opacity: .9; }
+  .footer {
+    background: #2a0507;
+    color: #e9d3a3;
+  }
+  .footer .gold-rule {
+    opacity: 0.9;
+  }
   .footer-grid {
-    display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 32px;
     padding-block: clamp(36px, 5vw, 56px) 28px;
   }
-  .footer-name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--gold-light); }
-  .footer-tag { font-style: italic; margin-top: 4px; color: #d9bd87; font-family: var(--font-display); }
-  .footer-fssai { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: .88rem; font-weight: 600; color: #fff4dc; }
-  .footer-fssai :global(svg) { color: var(--gold); }
+  .footer-name {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+  .footer-tag {
+    font-style: italic;
+    margin-top: 4px;
+    color: #d9bd87;
+    font-family: var(--font-display);
+  }
+  .footer-fssai {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #fff4dc;
+  }
+  .footer-fssai :global(svg) {
+    color: var(--gold);
+  }
 
-  .footer-links, .footer-contact { display: flex; flex-direction: column; gap: 10px; }
-  .footer a { color: #e9d3a3; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; width: fit-content; transition: color .2s; }
-  .footer a:hover { color: var(--gold-light); }
+  .footer-links,
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .footer a {
+    color: #e9d3a3;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    transition: color 0.2s;
+  }
+  .footer a:hover {
+    color: var(--gold-light);
+  }
 
   .footer-bottom {
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    padding-block: 18px 28px; border-top: 1px solid rgba(255, 226, 138, .14);
-    font-size: .82rem; color: #b79c6b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 18px 28px;
+    border-top: 1px solid rgba(255, 226, 138, 0.14);
+    font-size: 0.82rem;
+    color: #b79c6b;
   }
-  .to-top {
-    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
-    border: 1px solid rgba(255, 226, 138, .3); color: var(--gold-light);
+  .made {
+    color: #d9bd87;
+    white-space: nowrap;
   }
-  .to-top:hover { background: rgba(255, 226, 138, .12); }
+  .made span[aria-hidden] {
+    color: var(--red-bright);
+  }
 
   @media (max-width: 760px) {
-    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
   }
 </style>

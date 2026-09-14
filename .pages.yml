@@ -1,9 +1,19 @@
 # Pages CMS configuration — https://pagescms.org
 #
-# Free, GitHub-file-based CMS with no server of its own. The owner logs in at
-# https://app.pagescms.org with a GitHub account that has access to this repo,
-# edits products / settings in a form, and each save becomes a commit here.
-# Cloudflare Pages (or Netlify) rebuilds the site automatically on every commit.
+# Free, GitHub-file-based CMS with no server of its own. The developer connects this
+# repo once (GitHub login) and invites the owner by e-mail; the owner signs in with
+# that e-mail — no GitHub account needed — edits products / settings in a form, and
+# each save becomes a commit here. Cloudflare Pages rebuilds on every commit.
+
+settings:
+  commit:
+    # Record the editor's name/e-mail on each commit so history shows who changed what.
+    identity: user
+    templates:
+      create: 'Add {fileName} (via Pages CMS)'
+      update: 'Update {fileName} (via Pages CMS)'
+      delete: 'Remove {fileName} (via Pages CMS)'
+      rename: 'Rename {oldPath} to {newPath} (via Pages CMS)'
 
 media:
   input: src/assets/products
@@ -18,7 +28,7 @@ content:
     type: collection
     path: src/content/products
     format: json
-    filename: "{primary}.json"
+    filename: '{primary}.json'
     view:
       primary: name
       fields: [image, name, category, price, unit, available, order]
@@ -33,7 +43,7 @@ content:
         type: select
         required: true
         options:
-          values: [Bakery, Pickles, "Dry Fruits & Spices"]
+          values: [Bakery, Pickles, 'Dry Fruits & Spices']
       - name: image
         label: Photo
         type: image
@@ -118,14 +128,14 @@ content:
         type: string
         description: Digits only, with country code and no plus sign, e.g. 918310479223
         pattern:
-          regex: "^91[0-9]{10}$"
+          regex: '^91[0-9]{10}$'
           message: Use 91 followed by the 10-digit mobile number, no spaces.
       - name: callNumber
         label: Call number
         type: string
         description: Digits only, with country code, e.g. 917975925255
         pattern:
-          regex: "^91[0-9]{10}$"
+          regex: '^91[0-9]{10}$'
           message: Use 91 followed by the 10-digit mobile number, no spaces.
       - name: email
         label: Email
