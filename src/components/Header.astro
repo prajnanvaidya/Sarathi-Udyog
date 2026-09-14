@@ -103,11 +103,10 @@ const links = [
   .site-header.scrolled {
     box-shadow: 0 8px 30px -12px rgba(122, 10, 14, 0.25);
   }
-  .site-header.scrolled .nav {
-    min-height: 62px;
-  }
-  .site-header.scrolled .brand-logo {
-    height: 42px;
+  /* Compact the brand with a transform only. Changing the header's real height on scroll
+     makes Chrome's scroll anchoring shift scrollY, which re-toggles the class — a flicker loop. */
+  .site-header.scrolled .brand {
+    transform: scale(0.9);
   }
 
   .nav {
@@ -116,7 +115,6 @@ const links = [
     justify-content: space-between;
     gap: 16px;
     min-height: 72px;
-    transition: min-height 0.3s var(--ease);
   }
 
   .brand {
@@ -125,6 +123,8 @@ const links = [
     gap: 12px;
     text-decoration: none;
     color: inherit;
+    transform-origin: left center;
+    transition: transform 0.3s var(--ease);
   }
   .brand-logo {
     width: auto;
@@ -254,7 +254,17 @@ const links = [
   const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
   const links = document.getElementById('nav-links');
 
-  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
+  // Hysteresis: turn on past 40px, off only below 8px, so the state can't oscillate
+  // when the scroll position sits right at a threshold.
+  let scrolled = false;
+  const onScroll = () => {
+    const y = window.scrollY;
+    const next = scrolled ? y > 8 : y > 40;
+    if (next !== scrolled) {
+      scrolled = next;
+      header?.classList.toggle('scrolled', scrolled);
+    }
+  };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
