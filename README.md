@@ -101,6 +101,6 @@ Placeholders currently in `src/data/site.json` / product files — edit when ans
 - Payment methods (currently "UPI (GPay / PhonePe), bank transfer").
 - Business hours (`hours` is empty → hidden).
 - Google Maps share link (`mapsUrl` empty → falls back to a Maps search).
-- Village spelling: the label artwork says **Kankebettu**, the old site said Vankebettu / Vankdebettu. Currently "Vankebettu".
+- Village spelling: the labels say **Kankebettu** (pickles) and **Nankebettu** (new cake label), the old site said Vankebettu / Vankdebettu. Currently "Vankebettu".
 - Whether to show the full door number publicly.
 - Email, Instagram/Facebook (hidden when empty).

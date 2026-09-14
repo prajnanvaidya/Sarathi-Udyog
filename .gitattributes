@@ -1,0 +1,11 @@
+# Always check out text files with LF, even on Windows with core.autocrlf=true;
+# EditorConfig and Prettier expect LF, and git rewriting files to CRLF on pull broke Prettier.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff2 binary
