@@ -23,7 +23,8 @@ const products = defineCollection({
     available: z.boolean().optional().default(true),
     featured: z.boolean().optional().default(false),
     order: z.number().optional().default(100),
-    // File name (or path) inside src/assets/products/
+    // Path as Pages CMS writes it ("/src/assets/products/x.jpg"); only the file name is used to
+    // look the image up, so a bare "x.jpg" works too (see productImage in src/lib/site.ts).
     image: z.string(),
   }),
 });

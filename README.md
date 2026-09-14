@@ -51,7 +51,7 @@ without the scroll-reveal animation — useful for full-page screenshots.
 ### Adding or changing a product
 
 1. Drop the photo in `src/assets/products/` (JPG/PNG, ≥1000 px long edge — the build resizes it).
-2. Copy any file in `src/content/products/`, rename it (the file name becomes the URL anchor, e.g. `#product-nankhatai`), edit the fields.
+2. Copy any file in `src/content/products/`, rename it (the file name becomes the URL anchor, e.g. `#product-nankhatai`), edit the fields. `image` is the full path, `/src/assets/products/<file>.jpg` — the same form the CMS writes, so its photo previews work.
 3. `price: null` renders "Ask for price". `available: false` shows a "Currently unavailable" tag.
 4. Commit and push — the host rebuilds automatically.
 

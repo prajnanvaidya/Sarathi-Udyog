@@ -4,7 +4,7 @@
 # repo once (GitHub login) and invites the owner by e-mail; the owner signs in with
 # that e-mail — no GitHub account needed — edits products / settings in a form, and
 # each save becomes a commit here. Cloudflare Pages rebuilds on every commit.
-
+   
 settings:
   commit:
     # Record the editor's name/e-mail on each commit so history shows who changed what.
@@ -20,6 +20,8 @@ media:
   output: /src/assets/products
   extensions: [jpg, jpeg, png, webp]
   categories: [image]
+  # Slugify uploaded file names ("WhatsApp Image 2026-09-14 at 19.57.16.jpeg" -> "whatsapp-image-….jpeg").
+  rename: safe
 
 content:
   - name: products

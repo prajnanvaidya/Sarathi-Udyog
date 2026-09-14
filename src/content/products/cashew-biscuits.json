@@ -14,5 +14,5 @@
   "available": true,
   "featured": true,
   "order": 1,
-  "image": "cashew-biscuits.jpg"
+  "image": "/src/assets/products/cashew-biscuits.jpg"
 }
