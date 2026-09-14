@@ -1,0 +1,18 @@
+{
+  "name": "Homemade Red Chilly Powder",
+  "category": "Dry Fruits & Spices",
+  "tagline": "Pure • Aromatic • Naturally spicy",
+  "description": "Ground from selected long red chillies (for colour) and round red chillies (for rich taste). No added colour, no preservatives.",
+  "price": null,
+  "unit": "",
+  "priceNote": "Ask for current price and pack sizes",
+  "badges": ["No Added Colour", "No Preservatives", "Homemade"],
+  "ingredients": "Dried red chillies (long and round).",
+  "allergens": "",
+  "shelfLife": "6 months from packing",
+  "storage": "Keep in an airtight container away from moisture and sunlight.",
+  "available": true,
+  "featured": false,
+  "order": 7,
+  "image": "premium-red-chilly-powder.jpg"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "Mixed Mango, Lemon & Karande Kai Pickle",
+  "category": "Pickles",
+  "tagline": "Pure taste from nature",
+  "description": "Tender mango, tangy lemon and karande kai (Carissa) pickled together in traditional Udupi spices. Made without oil.",
+  "price": 100,
+  "unit": "500 g jar",
+  "priceNote": "",
+  "badges": ["Without Oil", "Natural Ingredients", "Homemade"],
+  "ingredients": "Mango, lemon, karande kai, salt, red chilly powder, mustard, fenugreek, turmeric, asafoetida (hing), spices.",
+  "allergens": "Contains mustard.",
+  "shelfLife": "6 months from packing",
+  "storage": "Keep in a cool, dry place away from sunlight. Always use a dry spoon.",
+  "available": true,
+  "featured": true,
+  "order": 4,
+  "image": "mixed-mango-pickle.jpg"
+}

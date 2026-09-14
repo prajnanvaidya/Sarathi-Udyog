@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Products from '../components/Products.astro';
+import WhyUs from '../components/WhyUs.astro';
+import HowToOrder from '../components/HowToOrder.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import StickyOrderBar from '../components/StickyOrderBar.astro';
+import { site, productImage } from '../lib/site';
+
+// Product structured data (Google rich results). Offers only where a price exists.
+const siteUrl = Astro.site ?? new URL('http://localhost:4321');
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const productLd = await Promise.all(
+  products.map(async (p) => {
+    const img = await getImage({ src: productImage(p.data.image), width: 800, format: 'jpg' });
+    return {
+      '@type': 'Product',
+      '@id': `${siteUrl.href}#product-${p.id}`,
+      name: p.data.name,
+      description: p.data.description,
+      image: new URL(img.src, siteUrl).href,
+      brand: { '@type': 'Brand', name: site.name },
+      category: p.data.category,
+      ...(p.data.price != null && {
+        offers: {
+          '@type': 'Offer',
+          price: p.data.price,
+          priceCurrency: 'INR',
+          availability: p.data.available ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          seller: { '@id': `${siteUrl.href}#business` },
+          url: `${siteUrl.href}#product-${p.id}`,
+        },
+      }),
+    };
+  }),
+);
+const listLd = {
+  '@type': 'ItemList',
+  name: `${site.name} products`,
+  itemListElement: productLd.map((p, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@id': p['@id'] } })),
+};
+---
+
+<Base jsonLd={[...productLd, listLd]}>
+  <Header />
+  <main id="main">
+    <Hero />
+    <Products />
+    <WhyUs />
+    <HowToOrder />
+    <About />
+    <Contact />
+  </main>
+  <Footer />
+  <StickyOrderBar />
+</Base>

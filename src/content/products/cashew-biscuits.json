@@ -1,0 +1,18 @@
+{
+  "name": "Cashew Biscuits",
+  "category": "Bakery",
+  "tagline": "Rich in tradition, baked with love",
+  "description": "Crisp, buttery biscuits studded with real cashew pieces. A tea-time classic made the traditional way.",
+  "price": 100,
+  "unit": "180 g pack",
+  "priceNote": "",
+  "badges": ["100% Veg", "Crispy & Buttery"],
+  "ingredients": "Refined wheat flour (maida), sugar, butter, vanaspati, milk solids, cashew, baking powder and a pinch of salt.",
+  "allergens": "Contains wheat, milk and nuts (cashew).",
+  "shelfLife": "Best before 1 month from packing",
+  "storage": "Keep in an airtight container in a cool, dry place.",
+  "available": true,
+  "featured": true,
+  "order": 1,
+  "image": "cashew-biscuits.jpg"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "Pure Veg Delight Cake",
+  "category": "Bakery",
+  "tagline": "Soft • Fresh • Delicious",
+  "description": "An eggless tea cake with a golden crust and a soft, moist crumb. Perfect with evening chai or as a gift.",
+  "price": 80,
+  "unit": "250 g",
+  "priceNote": "",
+  "badges": ["Eggless", "Freshly baked"],
+  "ingredients": "Wheat flour (maida), sugar, vegetable oil, vanaspati, milk solids, baking powder, baking soda, iodized salt.",
+  "allergens": "Contains wheat and milk.",
+  "shelfLife": "Best before 10 days from packing",
+  "storage": "Keep in a cool, dry place. Refrigerate after opening.",
+  "available": true,
+  "featured": false,
+  "order": 3,
+  "image": "pure-veg-delight-cake.jpg"
+}

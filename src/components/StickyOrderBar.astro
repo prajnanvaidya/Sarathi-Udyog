@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+import { whatsappLink, callLink } from '../lib/site';
+---
+
+<!-- Mobile-only bar; appears after the user scrolls past the hero -->
+<div class="sticky-bar" id="sticky-bar" aria-hidden="true">
+  <a class="btn btn-wa" href={whatsappLink()} target="_blank" rel="noopener noreferrer" tabindex="-1">
+    <Icon name="whatsapp" /> Order on WhatsApp
+  </a>
+  <a class="btn btn-outline" href={callLink} aria-label="Call to order" tabindex="-1">
+    <Icon name="phone" />
+  </a>
+</div>
+
+<style>
+  .sticky-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    display: none; gap: 10px; padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
+    background: rgba(255, 250, 240, .92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line); box-shadow: 0 -10px 30px -12px rgba(122, 10, 14, .3);
+    transform: translateY(110%); transition: transform .35s var(--ease);
+  }
+  .sticky-bar.show { transform: none; }
+  .sticky-bar .btn-wa { flex: 1; }
+  .sticky-bar .btn-outline { width: 48px; padding: 0; background: #fff; }
+  @media (max-width: 760px) {
+    .sticky-bar { display: flex; }
+    body { padding-bottom: 76px; }
+  }
+</style>
+
+<script>
+  const bar = document.getElementById('sticky-bar');
+  const hero = document.querySelector('.hero');
+  if (bar && hero && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      ([e]) => {
+        const show = !e.isIntersecting;
+        bar.classList.toggle('show', show);
+        bar.setAttribute('aria-hidden', String(!show));
+        bar.querySelectorAll('a').forEach((a) => (show ? a.removeAttribute('tabindex') : a.setAttribute('tabindex', '-1')));
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(hero);
+  }
+</script>

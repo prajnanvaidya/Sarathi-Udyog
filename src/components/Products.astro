@@ -1,0 +1,161 @@
+---
+import { getCollection } from 'astro:content';
+import ProductCard from './ProductCard.astro';
+import Icon from './Icon.astro';
+import { whatsappLink } from '../lib/site';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const categories = [...new Set(products.map((p) => p.data.category))];
+---
+
+<section class="section products" id="products" aria-labelledby="products-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Our collection</p>
+      <h2 id="products-title">Made to taste like tradition</h2>
+      <p>Every item is prepared in small batches, packed fresh and sent straight from Udupi to your door.</p>
+    </div>
+
+    <div class="filters reveal" role="group" aria-label="Filter products by category">
+      <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">All</button>
+      {categories.map((c) => (
+        <button type="button" class="filter" data-filter={c} aria-pressed="false">{c}</button>
+      ))}
+    </div>
+
+    <div class="grid" id="product-grid">
+      {products.map((p, i) => <ProductCard product={p} index={i} />)}
+    </div>
+
+    <p class="grid-empty" hidden>No products in this category yet.</p>
+
+    <div class="bulk reveal">
+      <div>
+        <h3>Bulk, wholesale or festival gift packs?</h3>
+        <p>We supply cashews, dry fruits and pickles in larger quantities for shops, offices and celebrations. Tell us what you need.</p>
+      </div>
+      <a class="btn btn-primary" href={whatsappLink('a bulk / wholesale quantity')} target="_blank" rel="noopener noreferrer">
+        <Icon name="whatsapp" /> Ask for bulk pricing
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<dialog class="lightbox" id="lightbox" aria-label="Product photo">
+  <button class="lightbox-close" type="button" data-close aria-label="Close">
+    <Icon name="close" />
+  </button>
+  <img alt="" />
+  <p class="lightbox-caption"></p>
+</dialog>
+
+<style>
+  .products {
+    background:
+      linear-gradient(180deg, var(--cream) 0, #fff 140px),
+      #fff;
+  }
+  .filters {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+  .filter {
+    padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line);
+    background: #fff; color: var(--ink-soft); font-weight: 600; font-size: .9rem; cursor: pointer;
+    transition: background .2s, color .2s, border-color .2s, transform .2s var(--ease);
+  }
+  .filter:hover { border-color: var(--gold); color: var(--maroon); transform: translateY(-1px); }
+  .filter.is-active { background: var(--maroon); color: #fff; border-color: var(--maroon); }
+
+  .grid {
+    display: grid; gap: clamp(16px, 2.4vw, 28px);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  }
+  .grid-empty { text-align: center; color: var(--ink-mute); padding: 40px 0; }
+
+  .bulk {
+    margin-top: clamp(36px, 6vw, 64px);
+    display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    padding: clamp(22px, 3vw, 32px); border-radius: var(--radius-lg);
+    background: linear-gradient(120deg, var(--cream-2), var(--cream-3));
+    border: 1px solid var(--line);
+  }
+  .bulk h3 { font-size: 1.35rem; }
+  .bulk p { margin-top: 6px; color: var(--ink-soft); max-width: 58ch; }
+
+  /* Lightbox */
+  .lightbox {
+    border: 0; padding: 0; background: transparent; max-width: min(96vw, 1100px); max-height: 92vh;
+    overflow: visible;
+  }
+  .lightbox::backdrop { background: rgba(51, 21, 11, .82); backdrop-filter: blur(6px); }
+  .lightbox img {
+    max-width: min(96vw, 1100px); max-height: 82vh; width: auto; height: auto; margin: 0 auto;
+    border-radius: var(--radius); background: #fff; box-shadow: var(--shadow-lg);
+    animation: pop .3s var(--ease);
+  }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } }
+  .lightbox-caption {
+    text-align: center; color: var(--gold-light); font-family: var(--font-display);
+    font-size: 1.1rem; margin-top: 12px;
+  }
+  .lightbox-close {
+    position: absolute; right: -6px; top: -14px; z-index: 1;
+    width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+    background: #fff; color: var(--maroon); display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  @media (max-width: 600px) {
+    .lightbox-close { right: 4px; top: 4px; }
+  }
+</style>
+
+<script>
+  // --- Category filter (progressive: without JS every product is visible)
+  const filters = document.querySelectorAll<HTMLButtonElement>('.filter');
+  const cards = document.querySelectorAll<HTMLElement>('#product-grid .product');
+  const empty = document.querySelector<HTMLElement>('.grid-empty');
+
+  filters.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      filters.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      let shown = 0;
+      cards.forEach((card) => {
+        const show = f === 'all' || card.dataset.category === f;
+        card.classList.toggle('hidden', !show);
+        if (show) {
+          shown++;
+          card.classList.add('in'); // make sure filtered-in cards aren't stuck pre-reveal
+        }
+      });
+      if (empty) empty.hidden = shown > 0;
+    });
+  });
+
+  // --- Lightbox
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
+  if (dialog && typeof dialog.showModal === 'function') {
+    const img = dialog.querySelector('img')!;
+    const cap = dialog.querySelector('.lightbox-caption')!;
+    document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        img.src = btn.dataset.full || '';
+        img.alt = btn.dataset.alt || '';
+        cap.textContent = btn.dataset.alt || '';
+        dialog.showModal();
+      });
+    });
+    dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close(); // click on backdrop
+    });
+    dialog.addEventListener('close', () => {
+      img.removeAttribute('src');
+    });
+  }
+</script>

@@ -1,0 +1,150 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.jpg';
+import Icon from './Icon.astro';
+import { site, whatsappLink } from '../lib/site';
+
+const links = [
+  { href: '#products', label: 'Products' },
+  { href: '#order', label: 'How to order' },
+  { href: '#about', label: 'About' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span><Icon name="leaf" size={14} /> 100% Vegetarian</span>
+    <span class="dot" aria-hidden="true">•</span>
+    <span><Icon name="shield" size={14} /> FSSAI Lic. {site.fssai}</span>
+    <span class="dot" aria-hidden="true">•</span>
+    <span><Icon name="truck" size={14} /> Delivery all over India</span>
+  </div>
+</div>
+
+<header class="site-header" id="top">
+  <nav class="wrap nav" aria-label="Main">
+    <a class="brand" href="#top" aria-label={`${site.name} — home`}>
+      <Image src={logo} alt="" width={160} densities={[1, 2]} loading="eager" class="brand-logo" />
+      <span class="brand-text">
+        <span class="brand-name">Sarathi Udyog</span>
+        <span class="brand-tag">Udupi, Karnataka</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+      <Icon name="menu" class="i-open" />
+      <Icon name="close" class="i-close" />
+      <span class="sr-only">Menu</span>
+    </button>
+
+    <div class="nav-links" id="nav-links">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a class="btn btn-wa btn-sm nav-cta" href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+        <Icon name="whatsapp" /> Order on WhatsApp
+      </a>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .topbar {
+    background: var(--maroon);
+    color: var(--gold-light);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  .topbar-inner {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding-block: 7px; flex-wrap: wrap;
+  }
+  .topbar span { display: inline-flex; align-items: center; gap: 6px; }
+  .topbar .dot { opacity: .5; }
+  @media (max-width: 560px) {
+    .topbar span:nth-child(2), .topbar span:nth-child(3) { display: none; }
+  }
+
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 250, 240, .86);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    border-bottom: 1px solid var(--line);
+    transition: box-shadow .3s var(--ease);
+  }
+  .site-header.scrolled { box-shadow: 0 8px 30px -12px rgba(122, 10, 14, .25); }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+
+  .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .brand-logo {
+    width: auto; height: 46px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 2px var(--gold), var(--shadow-sm);
+    transition: transform .3s var(--ease);
+  }
+  .brand:hover .brand-logo { transform: scale(1.04) rotate(-1deg); }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--maroon); letter-spacing: .01em; }
+  .brand-tag { font-size: .72rem; color: var(--ink-mute); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links > a:not(.btn) {
+    position: relative; padding: 10px 14px; border-radius: 999px;
+    color: var(--ink); text-decoration: none; font-weight: 600; font-size: .95rem;
+    transition: background .2s, color .2s;
+  }
+  .nav-links > a:not(.btn):hover { background: var(--cream-2); color: var(--maroon); }
+  .nav-cta { margin-left: 10px; }
+
+  .nav-toggle {
+    display: none; width: 46px; height: 46px; border-radius: 12px;
+    border: 1px solid var(--line); background: #fff; cursor: pointer;
+    place-items: center; color: var(--maroon);
+  }
+  .nav-toggle :global(.i-close) { display: none; }
+  .nav-toggle[aria-expanded="true"] :global(.i-open) { display: none; }
+  .nav-toggle[aria-expanded="true"] :global(.i-close) { display: block; }
+
+  @media (max-width: 860px) {
+    .nav-toggle { display: grid; }
+    .nav-links {
+      position: absolute; left: 0; right: 0; top: 100%;
+      flex-direction: column; align-items: stretch; gap: 2px;
+      padding: 12px var(--gutter) 18px;
+      background: var(--cream); border-bottom: 1px solid var(--line);
+      box-shadow: 0 20px 40px -20px rgba(122, 10, 14, .35);
+      transform-origin: top; transform: scaleY(.95); opacity: 0; visibility: hidden;
+      transition: opacity .25s var(--ease), transform .25s var(--ease), visibility 0s .25s;
+    }
+    .nav-links.open { opacity: 1; transform: none; visibility: visible; transition-delay: 0s; }
+    .nav-links > a:not(.btn) { padding: 12px 14px; font-size: 1.05rem; }
+    .nav-cta { margin: 10px 0 0; justify-content: center; }
+    .brand-text { display: none; }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('.site-header');
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const links = document.getElementById('nav-links');
+
+  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  if (toggle && links) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      links.classList.toggle('open', open);
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    links.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+  }
+</script>

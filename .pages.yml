@@ -1,0 +1,181 @@
+# Pages CMS configuration — https://pagescms.org
+#
+# Free, GitHub-file-based CMS with no server of its own. The owner logs in at
+# https://app.pagescms.org with a GitHub account that has access to this repo,
+# edits products / settings in a form, and each save becomes a commit here.
+# Cloudflare Pages (or Netlify) rebuilds the site automatically on every commit.
+
+media:
+  input: src/assets/products
+  output: /src/assets/products
+  extensions: [jpg, jpeg, png, webp]
+  categories: [image]
+
+content:
+  - name: products
+    label: Products
+    description: One entry per product. Drag to reorder, toggle "Available" to hide out-of-stock items without deleting them.
+    type: collection
+    path: src/content/products
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: name
+      fields: [image, name, category, price, unit, available, order]
+      sort: [order, name]
+    fields:
+      - name: name
+        label: Product name
+        type: string
+        required: true
+      - name: category
+        label: Category
+        type: select
+        required: true
+        options:
+          values: [Bakery, Pickles, "Dry Fruits & Spices"]
+      - name: image
+        label: Photo
+        type: image
+        required: true
+        description: JPG or PNG, ideally at least 1000 px on the long edge. The site resizes it automatically.
+      - name: tagline
+        label: Tagline
+        type: string
+        description: Short italic line under the name, e.g. "Crispy & buttery".
+      - name: description
+        label: Description
+        type: text
+        description: One or two sentences.
+      - name: price
+        label: Price (₹)
+        type: number
+        description: Leave empty to show "Ask for price" instead of a number.
+        options:
+          min: 0
+      - name: unit
+        label: Pack size
+        type: string
+        description: e.g. "500 g jar", "180 g pack", "250 g"
+      - name: priceNote
+        label: Price note
+        type: string
+        description: Optional small text under the price, e.g. "Price varies by grade and season".
+      - name: badges
+        label: Badges
+        type: string
+        list:
+          max: 3
+        description: Up to three short labels, e.g. "Without Oil", "100% Veg".
+      - name: ingredients
+        label: Ingredients
+        type: text
+      - name: allergens
+        label: Allergen note
+        type: string
+        description: e.g. "Contains wheat, milk and nuts (cashew)."
+      - name: shelfLife
+        label: Shelf life
+        type: string
+        description: e.g. "6 months from packing"
+      - name: storage
+        label: Storage instructions
+        type: string
+      - name: available
+        label: Available
+        type: boolean
+        default: true
+        description: Switch off to mark "Currently unavailable" (the card stays visible).
+      - name: featured
+        label: Featured
+        type: boolean
+        default: false
+      - name: order
+        label: Display order
+        type: number
+        default: 100
+        description: Lower numbers appear first.
+
+  - name: settings
+    label: Site settings
+    description: Phone numbers, address, delivery info and the WhatsApp message template.
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - name: name
+        label: Business name
+        type: string
+        required: true
+      - name: tagline
+        label: Tagline
+        type: string
+      - name: description
+        label: Site description (for Google & link previews)
+        type: text
+      - name: whatsappNumber
+        label: WhatsApp number
+        type: string
+        description: Digits only, with country code and no plus sign, e.g. 918310479223
+        pattern:
+          regex: "^91[0-9]{10}$"
+          message: Use 91 followed by the 10-digit mobile number, no spaces.
+      - name: callNumber
+        label: Call number
+        type: string
+        description: Digits only, with country code, e.g. 917975925255
+        pattern:
+          regex: "^91[0-9]{10}$"
+          message: Use 91 followed by the 10-digit mobile number, no spaces.
+      - name: email
+        label: Email
+        type: string
+      - name: whatsappMessage
+        label: WhatsApp message template
+        type: text
+        description: "{product} is replaced by the product name when a customer taps 'Order on WhatsApp'."
+      - name: fssai
+        label: FSSAI licence number
+        type: string
+      - name: gst
+        label: GSTIN
+        type: string
+      - name: proprietors
+        label: Proprietors
+        type: string
+        list: true
+      - name: address
+        label: Address
+        type: object
+        fields:
+          - { name: line1, label: Line 1, type: string }
+          - { name: line2, label: Line 2, type: string }
+          - { name: line3, label: Village / Town, type: string }
+          - { name: state, label: State, type: string }
+          - { name: pincode, label: PIN code, type: string }
+      - name: mapsUrl
+        label: Google Maps link
+        type: string
+        description: Paste the "Share" link from Google Maps / Google Business Profile. Leave empty to use a search link.
+      - name: hours
+        label: Business hours
+        type: string
+        description: e.g. "Mon–Sat, 9 am – 7 pm"
+      - name: delivery
+        label: Delivery information
+        type: object
+        fields:
+          - { name: headline, label: Headline, type: string }
+          - { name: charges, label: Delivery charges, type: text }
+          - { name: time, label: Dispatch / delivery time, type: text }
+          - { name: localPickup, label: Local pickup note, type: string }
+      - name: payment
+        label: Payment methods
+        type: string
+        description: Shown in the "How to order" steps, e.g. "UPI (GPay / PhonePe), bank transfer"
+      - name: social
+        label: Social links
+        type: object
+        fields:
+          - { name: instagram, label: Instagram URL, type: string }
+          - { name: facebook, label: Facebook URL, type: string }

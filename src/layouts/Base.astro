@@ -1,0 +1,127 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/fraunces/wght-italic.css';
+import '../styles/global.css';
+import { site } from '../lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Extra JSON-LD objects to add to the @graph */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const {
+  title = `${site.name} — Traditional Biscuits, Cakes, Pickles & Dry Fruits | Udupi, Karnataka`,
+  description = site.description,
+  jsonLd = [],
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = new URL('/og-image.jpg', siteUrl).href;
+
+const business = {
+  '@type': ['LocalBusiness', 'FoodEstablishment'],
+  '@id': `${siteUrl.href}#business`,
+  name: site.name,
+  slogan: site.tagline,
+  description: site.description,
+  url: siteUrl.href,
+  image: ogImage,
+  logo: new URL('/favicon-512.png', siteUrl).href,
+  telephone: `+${site.callNumber}`,
+  email: site.email || undefined,
+  servesCuisine: 'Indian',
+  priceRange: '₹',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${site.address.line1}, ${site.address.line2}`,
+    addressLocality: site.address.line3,
+    addressRegion: site.address.state,
+    postalCode: site.address.pincode,
+    addressCountry: 'IN',
+  },
+  areaServed: { '@type': 'Country', name: 'India' },
+  founder: site.proprietors.map((name) => ({ '@type': 'Person', name })),
+  sameAs: [site.social.instagram, site.social.facebook].filter(Boolean),
+  identifier: { '@type': 'PropertyValue', propertyID: 'FSSAI', value: site.fssai },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      telephone: `+${site.whatsappNumber}`,
+      url: `https://wa.me/${site.whatsappNumber}`,
+      availableLanguage: ['en', 'kn'],
+    },
+  ],
+};
+
+const graph = { '@context': 'https://schema.org', '@graph': [business, ...jsonLd] };
+---
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#7a0a0e" />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" sizes="48x48" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph / WhatsApp / Twitter link previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name} — ${site.tagline}`} />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="geo.region" content="IN-KA" />
+    <meta name="geo.placename" content="Udupi" />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(graph)} />
+    <script is:inline>document.documentElement.classList.remove('no-js');</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+
+    <script>
+      // Scroll-reveal: add .in when an element enters the viewport (once).
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const els = document.querySelectorAll<HTMLElement>('.reveal');
+      if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach((el) => el.classList.add('in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

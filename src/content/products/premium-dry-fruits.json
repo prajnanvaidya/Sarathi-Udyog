@@ -1,0 +1,18 @@
+{
+  "name": "Premium Dry Fruits",
+  "category": "Dry Fruits & Spices",
+  "tagline": "Pure, natural and nutritious",
+  "description": "Almonds, pistachios, raisins, dates and more — all types of quality dry fruits for gifting, festivals and bulk orders.",
+  "price": null,
+  "unit": "",
+  "priceNote": "Ask for current prices — bulk & gift packs available",
+  "badges": ["Premium Quality", "Bulk orders"],
+  "ingredients": "",
+  "allergens": "Contains tree nuts.",
+  "shelfLife": "",
+  "storage": "Keep in an airtight container in a cool, dry place.",
+  "available": true,
+  "featured": false,
+  "order": 8,
+  "image": "premium-dry-fruits.jpg"
+}

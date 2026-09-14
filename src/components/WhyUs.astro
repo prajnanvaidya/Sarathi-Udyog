@@ -1,0 +1,51 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../lib/site';
+
+const points = [
+  { icon: 'leaf', title: '100% vegetarian', text: 'Every product is pure veg — no eggs, no animal-derived additives.' },
+  { icon: 'home', title: 'Homemade in small batches', text: 'Made in our own kitchen in Udupi, not a factory. Fresh, every batch.' },
+  { icon: 'shield', title: 'FSSAI licensed', text: `Registered food business. Licence no. ${site.fssai} on every pack.` },
+  { icon: 'truck', title: 'Delivered across India', text: 'Packed securely and shipped anywhere in India. Local pickup too.' },
+] as const;
+---
+
+<section class="section why" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Why families trust us</p>
+      <h2 id="why-title">Honest food, made the old way</h2>
+    </div>
+    <ul class="why-grid">
+      {points.map((p, i) => (
+        <li class="why-item reveal" style={`--delay: ${i * 90}ms`}>
+          <span class="why-icon"><Icon name={p.icon} /></span>
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .why { background: var(--cream); }
+  .why-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  }
+  .why-item {
+    padding: 26px 22px; border-radius: var(--radius);
+    background: #fff; border: 1px solid var(--line);
+    transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .why-item:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .why-icon {
+    display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px;
+    background: linear-gradient(135deg, var(--yellow), var(--gold)); color: var(--maroon);
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,.08);
+  }
+  .why-item h3 { font-size: 1.15rem; margin-top: 16px; }
+  .why-item p { margin-top: 8px; color: var(--ink-soft); font-size: .93rem; }
+</style>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sarathi-udyog.pages.dev/sitemap.xml

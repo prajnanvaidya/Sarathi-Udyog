@@ -1,0 +1,18 @@
+{
+  "name": "Premium Cashew Kernels",
+  "category": "Dry Fruits & Spices",
+  "tagline": "Whole, creamy, premium grade",
+  "description": "Hand-sorted whole cashew kernels from the Udupi coast. Available in multiple grades — ask us for today's price.",
+  "price": null,
+  "unit": "",
+  "priceNote": "Price varies by grade and season",
+  "badges": ["Premium Quality", "Multiple grades"],
+  "ingredients": "100% cashew kernels.",
+  "allergens": "Tree nut (cashew).",
+  "shelfLife": "6 months from packing",
+  "storage": "Keep in an airtight container in a cool, dry place.",
+  "available": true,
+  "featured": false,
+  "order": 6,
+  "image": "premium-cashew-kernels.jpg"
+}
