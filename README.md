@@ -64,11 +64,16 @@ or an image file is missing, so a bad edit can never reach the live site.
 
 ## Deploy & CMS
 
-Full step-by-step (Cloudflare Pages hosting, Pages CMS for the owner, the no-GitHub-account
-setup, and what access is actually granted) lives in [docs/DEPLOY-AND-CMS.md](docs/DEPLOY-AND-CMS.md).
-In short: push to GitHub → connect the repo to Cloudflare Pages (build `npm run build`, output
-`dist`, `NODE_VERSION=22`) → every commit redeploys. The owner edits products at
-<https://app.pagescms.org> with an e-mail invite (no GitHub account needed); each save is a commit. `public/_headers` carries the security headers.
+- **Hosting:** Cloudflare Pages, connected to this repo (build `npm run build`, output `dist`,
+  `NODE_VERSION=22`). Every commit to `main` redeploys; a failed build keeps the previous
+  deployment live. `public/_headers` carries the security headers.
+- **CMS:** the owner edits products and site settings at <https://app.pagescms.org>, invited by
+  e-mail (no GitHub account). Forms are defined in `.pages.yml`; each save is a commit made by
+  the Pages CMS GitHub App, which is installed on this repository only.
+- **Build check:** `.github/workflows/build.yml` runs `npm run build` on every push. If `main`
+  stops building (typically a product pointing at a photo deleted from the CMS _Media_ page),
+  it opens an issue assigned to the repo owner — GitHub e-mails it — and closes it when the
+  build passes again.
 
 ## Scripts
 

@@ -1,0 +1,96 @@
+# Runs the same `npm run build` Cloudflare Pages runs, on every push to main
+# (including commits made by the owner through Pages CMS) and on pull requests.
+#
+# Cloudflare already refuses to publish a broken build, but it tells nobody.
+# This workflow opens a GitHub issue assigned to the repo owner when the build
+# fails (GitHub e-mails the assignee) and closes it again once main builds.
+# Free: private repos get 2,000 Actions minutes/month; a run here takes ~1 minute.
+
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+# A newer push cancels a still-running check of the older one.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        # Keep the log so the failure issue can quote the actual error.
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee build.log
+
+      # ---------------------------------------------------------------------
+      # Notifications (main only; a PR shows its own red cross).
+
+      - name: Report failure as an issue
+        if: failure() && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          author=$(git log -1 --format='%an <%ae>')
+          subject=$(git log -1 --format='%s')
+          short=$(git rev-parse --short HEAD)
+          # Last lines of the build log, without terminal colour codes.
+          log=$(tail -n 40 build.log | sed 's/\x1b\[[0-9;]*m//g')
+
+          body=$(printf '%s\n' \
+            "The site did not build after [\`$short\`]($COMMIT_URL) — **$subject** by $author." \
+            "" \
+            "Cloudflare is still serving the last good version; nothing changes for visitors until this is fixed." \
+            "" \
+            "Usual causes: a product points at a photo that was deleted in the CMS **Media** page, or a field has the wrong type." \
+            "Fix the file, or re-upload a photo for that product in the CMS. This issue closes itself when \`main\` builds again." \
+            "" \
+            "[Full log]($RUN_URL)" \
+            "" \
+            '```' \
+            "$log" \
+            '```')
+
+          gh label create build-failed --color B60205 --description 'npm run build fails on main' --force
+          existing=$(gh issue list --label build-failed --state open --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title 'Build failed on main' --label build-failed --assignee "$OWNER" --body "$body"
+          fi
+
+      - name: Close the failure issue once main builds again
+        if: success() && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+        run: |
+          short=$(git rev-parse --short HEAD)
+          for n in $(gh issue list --label build-failed --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "Builds again as of [\`$short\`]($COMMIT_URL)."
+          done
