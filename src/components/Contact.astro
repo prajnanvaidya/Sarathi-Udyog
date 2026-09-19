@@ -59,7 +59,13 @@ import { site, whatsappLink, callLink, formatPhone, fullAddress, mapsLink } from
             <Icon name="mail" />
           </span>
           <span class="ccard-label">Email</span>
-          <span class="ccard-value">{site.email}</span>
+          <span class="ccard-value ccard-email">
+            {site.email.split('@')[0]}
+            <wbr />@{site.email.split('@')[1]}
+          </span>
+          <span class="ccard-hint">
+            Tap to write to us <Icon name="arrow" size={16} />
+          </span>
         </a>
       )}
     </div>
@@ -123,6 +129,11 @@ import { site, whatsappLink, callLink, formatPhone, fullAddress, mapsLink } from
     font-size: 1.35rem;
     color: var(--maroon);
     line-height: 1.25;
+    overflow-wrap: anywhere; /* long single words (e-mail) wrap instead of spilling out */
+  }
+  .ccard-email {
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
   }
   .ccard-address {
     font-family: var(--font-body);
