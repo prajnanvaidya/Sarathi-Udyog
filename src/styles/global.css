@@ -35,9 +35,14 @@
   --link: var(--red);
   --wa-soft: #e4f5f2; /* WhatsApp icon tile */
   --wa-ink: var(--wa); /* WhatsApp-coloured text on a surface */
+  --frame: #ffffff; /* photo frames (hero collage, About gallery) */
   --hero-base: #fff6d8;
   --hero-dots: rgba(122, 10, 14, 0.1);
-  --glow: 1; /* strength of the yellow/gold background glows (hero, order section) */
+  /* Background glows: colour triplets + one overall strength */
+  --glow-hero-a: 253, 216, 53;
+  --glow-hero-b: 230, 180, 34;
+  --glow-order: 253, 216, 53;
+  --glow: 1;
   /* "r, g, b" triplets for translucent surfaces and tinted shadows: rgba(var(--x-rgb), a) */
   --surface-rgb: 255, 255, 255;
   --cream-rgb: 255, 250, 240;
@@ -379,7 +384,7 @@ p + p {
   --ink: #f3e9d8;
   --ink-soft: #c9b8a3;
   --ink-mute: #9b8a76;
-  --line: #3f3329;
+  --line: #4a3a27; /* gold-tinted edge on cards and controls */
 
   --surface: #271f1b; /* cards */
   --bg-alt: #1f1815;
@@ -387,15 +392,30 @@ p + p {
   --link: #f08a8e;
   --wa-soft: #123a35;
   --wa-ink: #4fd1b8;
-  --hero-base: #211915;
-  --hero-dots: rgba(255, 226, 138, 0.07);
-  --glow: 0.22;
+  --frame: #f3e9d8; /* cream polaroid frames so photos lift off the charcoal */
+  --hero-base: #231a17;
+  --hero-dots: rgba(255, 226, 138, 0.09);
+  --glow-hero-a: 150, 20, 26; /* deep maroon glow */
+  --glow-hero-b: 230, 180, 34; /* gold glow */
+  --glow-order: 230, 180, 34;
+  --glow: 0.45;
   --surface-rgb: 39, 31, 27;
   --cream-rgb: 26, 20, 18;
   --shadow-rgb: 0, 0, 0;
   --ink-rgb: 0, 0, 0;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
+  /* Depth from black, plus a faint gold ring / halo so lifted elements glow rather than sink */
+  --shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(230, 180, 34, 0.14);
+  --shadow-lg: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 0 50px -12px rgba(230, 180, 34, 0.16);
+}
+
+/* Large headings get a soft gold sheen in dark mode (colour only; type is unchanged). */
+[data-theme='dark'] h1,
+[data-theme='dark'] h2 {
+  background: linear-gradient(135deg, #f9df9e 0%, #f2cd7c 50%, #dfae4c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }

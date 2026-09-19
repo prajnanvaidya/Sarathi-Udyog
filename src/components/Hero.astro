@@ -80,8 +80,16 @@ const collage = [
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(60% 55% at 85% 20%, rgba(253, 216, 53, calc(0.55 * var(--glow))), transparent 70%),
-      radial-gradient(45% 45% at 10% 90%, rgba(230, 180, 34, calc(0.28 * var(--glow))), transparent 70%),
+      radial-gradient(
+        60% 55% at 85% 20%,
+        rgba(var(--glow-hero-a), calc(0.55 * var(--glow))),
+        transparent 70%
+      ),
+      radial-gradient(
+        45% 45% at 10% 90%,
+        rgba(var(--glow-hero-b), calc(0.28 * var(--glow))),
+        transparent 70%
+      ),
       linear-gradient(180deg, var(--hero-base) 0%, var(--cream) 100%);
   }
   /* subtle rangoli dot grid */
@@ -160,7 +168,7 @@ const collage = [
     margin: 0;
     border-radius: var(--radius);
     overflow: hidden;
-    background: var(--surface);
+    background: var(--frame);
     padding: 8px;
     box-shadow:
       var(--shadow-lg),
