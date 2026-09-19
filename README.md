@@ -1,6 +1,7 @@
 # Sarathi Udyog — website
 
-Static site for Sarathi Udyog, a home food business in Udupi, Karnataka.
+Static site for Sarathi Udyog, a family-run food business in Udupi, Karnataka — biscuits, cakes,
+pickles, spices and dry fruits, ordered over WhatsApp.
 Built with [Astro](https://astro.build); orders go straight to the owner's WhatsApp.
 
 ## Quick start
