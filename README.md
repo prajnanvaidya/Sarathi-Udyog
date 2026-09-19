@@ -22,7 +22,8 @@ Node 22.12+ is required.
 | Products (one JSON file each)                                   | `src/content/products/*.json`                                  |
 | Product photos                                                  | `src/assets/products/`                                         |
 | Phone numbers, address, FSSAI, delivery text, WhatsApp message  | `src/data/site.json`                                           |
-| Colours, fonts, buttons                                         | `src/styles/global.css`                                        |
+| Colours, fonts, buttons; light + dark palettes                  | `src/styles/global.css`                                        |
+| Theme toggle and first-paint theme script                       | `src/components/Header.astro`, `src/scripts/theme-init.js`     |
 | Page sections                                                   | `src/components/*.astro`, assembled in `src/pages/index.astro` |
 | `<head>` (title, OG tags, JSON-LD)                              | `src/layouts/Base.astro`                                       |
 | Logo / emblem / mark (transparent) — generated, don't hand-edit | `src/assets/logo*.png`                                         |
@@ -43,6 +44,20 @@ npm run build
 
 It keys out the yellow, trims, and writes the transparent logo, the emblem used in the
 header, every favicon size and the 1200×630 WhatsApp/Google preview image.
+
+### Light / dark theme
+
+Every colour is a CSS custom property in `src/styles/global.css`: the `:root` block is the
+original light design and `[data-theme='dark']` at the bottom redefines only the tokens that
+change (page and card surfaces, text, borders, headings, shadows). Brand colours — the maroon
+bands, gold accents, WhatsApp green — are the same in both themes.
+
+- `src/scripts/theme-init.js` runs synchronously in `<head>` and sets `data-theme` on `<html>`
+  before anything paints, so there is no flash of the wrong theme. It uses the choice saved in
+  `localStorage` (`theme` = `light` | `dark`) and otherwise follows the OS preference.
+- The sun/moon button in the header (`Header.astro`) flips the theme and saves the choice.
+  Until the visitor has chosen, the site also follows OS theme changes live.
+- The script is an external file, not inline, so the CSP can stay `script-src 'self'`.
 
 ### Screenshots / visual testing
 

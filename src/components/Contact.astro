@@ -87,7 +87,7 @@ import { site, whatsappLink, callLink, formatPhone, fullAddress, mapsLink } from
     gap: 6px;
     padding: 26px 24px;
     border-radius: var(--radius-lg);
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     color: var(--ink);
     text-decoration: none;
@@ -109,12 +109,12 @@ import { site, whatsappLink, callLink, formatPhone, fullAddress, mapsLink } from
     height: 48px;
     border-radius: 14px;
     background: var(--cream-2);
-    color: var(--maroon);
+    color: var(--heading);
     margin-bottom: 8px;
   }
   .ccard-wa .ccard-icon {
-    background: #e4f5f2;
-    color: var(--wa);
+    background: var(--wa-soft);
+    color: var(--wa-ink);
   }
   .ccard-label {
     font-size: 0.78rem;
@@ -127,7 +127,7 @@ import { site, whatsappLink, callLink, formatPhone, fullAddress, mapsLink } from
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 1.35rem;
-    color: var(--maroon);
+    color: var(--heading);
     line-height: 1.25;
     overflow-wrap: anywhere; /* long single words (e-mail) wrap instead of spilling out */
   }
@@ -154,7 +154,7 @@ import { site, whatsappLink, callLink, formatPhone, fullAddress, mapsLink } from
     font-weight: 600;
   }
   .ccard-wa .ccard-hint {
-    color: var(--wa);
+    color: var(--wa-ink);
   }
   .ccard-wa:hover {
     border-color: var(--wa);

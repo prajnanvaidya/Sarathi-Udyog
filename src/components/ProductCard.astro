@@ -125,7 +125,7 @@ const full = await getImage({ src: img, width: 1200, format: 'webp' });
   .product {
     display: flex;
     flex-direction: column;
-    background: #fff;
+    background: var(--surface);
     border-radius: var(--radius-lg);
     border: 1px solid var(--line);
     box-shadow: var(--shadow-sm);
@@ -188,8 +188,8 @@ const full = await getImage({ src: img, width: 1200, format: 'webp' });
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--maroon);
+    background: rgba(var(--surface-rgb), 0.9);
+    color: var(--heading);
     box-shadow: var(--shadow-sm);
     opacity: 0;
     transform: translateY(6px);
@@ -274,7 +274,7 @@ const full = await getImage({ src: img, width: 1200, format: 'webp' });
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.6rem;
-    color: var(--maroon);
+    color: var(--heading);
     line-height: 1;
   }
   .unit {
@@ -307,7 +307,7 @@ const full = await getImage({ src: img, width: 1200, format: 'webp' });
     cursor: pointer;
     list-style: none;
     font-weight: 600;
-    color: var(--maroon);
+    color: var(--heading);
     padding: 4px 0;
   }
   .details summary::-webkit-details-marker {

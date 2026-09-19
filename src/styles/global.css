@@ -2,6 +2,8 @@
    Sarathi Udyog — design tokens & base styles
    ========================================================================== */
 :root {
+  color-scheme: light;
+
   /* Brand palette (from the packaging: maroon, gold, marigold yellow, leaf green) */
   --maroon: #7a0a0e;
   --red: #a50d12;
@@ -23,15 +25,34 @@
   --line: #ecd9a8;
   --white: #ffffff;
 
+  /* Theme roles. These light values are the original design; [data-theme='dark'] at the
+     bottom of this file redefines them together with the surface/text tokens above
+     (--cream* = page & inner surfaces, --ink* = text, --line = borders). Brand backgrounds
+     (topbar, ticker, delivery card) stay maroon in both themes. */
+  --surface: #ffffff; /* cards, panels, controls */
+  --bg-alt: #ffffff; /* sections that sit on white rather than cream */
+  --heading: var(--maroon); /* headings and brand-coloured text */
+  --link: var(--red);
+  --wa-soft: #e4f5f2; /* WhatsApp icon tile */
+  --wa-ink: var(--wa); /* WhatsApp-coloured text on a surface */
+  --hero-base: #fff6d8;
+  --hero-dots: rgba(122, 10, 14, 0.1);
+  --glow: 1; /* strength of the yellow/gold background glows (hero, order section) */
+  /* "r, g, b" triplets for translucent surfaces and tinted shadows: rgba(var(--x-rgb), a) */
+  --surface-rgb: 255, 255, 255;
+  --cream-rgb: 255, 250, 240;
+  --shadow-rgb: 122, 10, 14;
+  --ink-rgb: 51, 21, 11;
+
   --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
   --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --radius-sm: 10px;
   --radius: 18px;
   --radius-lg: 28px;
-  --shadow-sm: 0 1px 2px rgba(51, 21, 11, 0.06), 0 2px 8px rgba(51, 21, 11, 0.06);
-  --shadow: 0 10px 30px -10px rgba(122, 10, 14, 0.25), 0 2px 6px rgba(51, 21, 11, 0.06);
-  --shadow-lg: 0 30px 60px -20px rgba(122, 10, 14, 0.35);
+  --shadow-sm: 0 1px 2px rgba(var(--ink-rgb), 0.06), 0 2px 8px rgba(var(--ink-rgb), 0.06);
+  --shadow: 0 10px 30px -10px rgba(var(--shadow-rgb), 0.25), 0 2px 6px rgba(var(--ink-rgb), 0.06);
+  --shadow-lg: 0 30px 60px -20px rgba(var(--shadow-rgb), 0.35);
 
   --wrap: 1180px;
   --gutter: clamp(16px, 4vw, 32px);
@@ -71,11 +92,11 @@ video {
   height: auto;
 }
 a {
-  color: var(--red);
+  color: var(--link);
   text-underline-offset: 0.15em;
 }
 a:hover {
-  color: var(--maroon);
+  color: var(--heading);
 }
 button {
   font: inherit;
@@ -93,7 +114,7 @@ h4 {
     'WONK' 0;
   line-height: 1.1;
   margin: 0;
-  color: var(--maroon);
+  color: var(--heading);
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
@@ -261,7 +282,7 @@ p + p {
 }
 .btn-outline {
   --btn-bg: transparent;
-  --btn-fg: var(--maroon);
+  --btn-fg: var(--heading);
   --btn-bd: var(--gold);
   box-shadow: none;
 }
@@ -303,7 +324,7 @@ p + p {
 }
 .chip-gold {
   background: var(--cream-3);
-  color: var(--maroon);
+  color: var(--heading);
 }
 
 /* Scroll-reveal ------------------------------------------------------------
@@ -339,4 +360,42 @@ p + p {
     opacity: 1;
     transform: none;
   }
+}
+
+/* Dark theme ---------------------------------------------------------------
+   A deliberate warm-charcoal palette (not an inversion): gold headings and the brand
+   maroon bands on near-black, cream text. Set on <html> by src/scripts/theme-init.js
+   before first paint and flipped by the toggle in src/components/Header.astro. */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --maroon: #8a1015; /* a touch brighter so the brand bands separate from the page */
+  --red-bright: #f2646a;
+  --cream: #1a1412; /* page */
+  --cream-2: #2f2622; /* hover / inner surfaces */
+  --cream-3: #3b2f27;
+  --green: #7ed49b;
+  --green-soft: #1c3527;
+  --ink: #f3e9d8;
+  --ink-soft: #c9b8a3;
+  --ink-mute: #9b8a76;
+  --line: #3f3329;
+
+  --surface: #271f1b; /* cards */
+  --bg-alt: #1f1815;
+  --heading: #f2cd7c; /* warm gold */
+  --link: #f08a8e;
+  --wa-soft: #123a35;
+  --wa-ink: #4fd1b8;
+  --hero-base: #211915;
+  --hero-dots: rgba(255, 226, 138, 0.07);
+  --glow: 0.22;
+  --surface-rgb: 39, 31, 27;
+  --cream-rgb: 26, 20, 18;
+  --shadow-rgb: 0, 0, 0;
+  --ink-rgb: 0, 0, 0;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
 }

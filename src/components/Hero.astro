@@ -80,16 +80,16 @@ const collage = [
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(60% 55% at 85% 20%, rgba(253, 216, 53, 0.55), transparent 70%),
-      radial-gradient(45% 45% at 10% 90%, rgba(230, 180, 34, 0.28), transparent 70%),
-      linear-gradient(180deg, #fff6d8 0%, var(--cream) 100%);
+      radial-gradient(60% 55% at 85% 20%, rgba(253, 216, 53, calc(0.55 * var(--glow))), transparent 70%),
+      radial-gradient(45% 45% at 10% 90%, rgba(230, 180, 34, calc(0.28 * var(--glow))), transparent 70%),
+      linear-gradient(180deg, var(--hero-base) 0%, var(--cream) 100%);
   }
   /* subtle rangoli dot grid */
   .hero-bg::after {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(122, 10, 14, 0.1) 1px, transparent 1.5px);
+    background-image: radial-gradient(var(--hero-dots) 1px, transparent 1.5px);
     background-size: 22px 22px;
     mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 80%);
     -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 80%);
@@ -160,11 +160,11 @@ const collage = [
     margin: 0;
     border-radius: var(--radius);
     overflow: hidden;
-    background: #fff;
+    background: var(--surface);
     padding: 8px;
     box-shadow:
       var(--shadow-lg),
-      0 0 0 1px rgba(122, 10, 14, 0.06);
+      0 0 0 1px rgba(var(--shadow-rgb), 0.06);
     animation: float 7s ease-in-out infinite;
   }
   .hero-art .card img {
@@ -248,11 +248,11 @@ const collage = [
     padding: 8px 14px;
     border-radius: 999px;
     border: 1px dashed var(--gold);
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(var(--surface-rgb), 0.5);
   }
   .hero-phone:hover {
-    color: var(--maroon);
-    background: #fff;
+    color: var(--heading);
+    background: var(--surface);
   }
 
   @media (max-width: 900px) {

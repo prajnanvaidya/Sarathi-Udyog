@@ -18,14 +18,14 @@ import Icon from './Icon.astro';
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    color: var(--maroon);
-    background: rgba(255, 250, 240, 0.55);
+    color: var(--heading);
+    background: rgba(var(--cream-rgb), 0.55);
     border: 1px solid rgba(230, 180, 34, 0.55);
     backdrop-filter: blur(10px) saturate(150%);
     -webkit-backdrop-filter: blur(10px) saturate(150%);
     box-shadow:
-      0 8px 24px -8px rgba(122, 10, 14, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      0 8px 24px -8px rgba(var(--shadow-rgb), 0.35),
+      inset 0 1px 0 rgba(var(--surface-rgb), 0.6);
     opacity: 0;
     transform: translateY(14px) scale(0.9);
     pointer-events: none;

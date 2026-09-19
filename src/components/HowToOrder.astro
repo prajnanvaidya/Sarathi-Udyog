@@ -80,7 +80,9 @@ const steps = [
 
 <style>
   .order {
-    background: radial-gradient(50% 60% at 100% 0%, rgba(253, 216, 53, 0.25), transparent 70%), #fff;
+    background:
+      radial-gradient(50% 60% at 100% 0%, rgba(253, 216, 53, calc(0.25 * var(--glow))), transparent 70%),
+      var(--bg-alt);
   }
   .order-grid {
     display: grid;

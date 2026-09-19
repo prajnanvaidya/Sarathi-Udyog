@@ -4,6 +4,7 @@ import '@fontsource-variable/fraunces';
 import '@fontsource-variable/fraunces/wght-italic.css';
 import '../styles/global.css';
 import { site } from '../lib/site';
+import themeInit from '../scripts/theme-init.js?url';
 
 interface Props {
   title?: string;
@@ -65,11 +66,14 @@ const graph = { '@context': 'https://schema.org', '@graph': [business, ...jsonLd
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Sets data-theme (saved choice, else OS preference) before anything paints. Synchronous on
+         purpose; external rather than inline so the CSP in public/_headers stays script-src 'self'. -->
+    <script is:inline src={themeInit}></script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#7a0a0e" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="generator" content={Astro.generator} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

@@ -42,12 +42,6 @@ const links = [
       </span>
     </a>
 
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
-      <Icon name="menu" class="i-open" />
-      <Icon name="close" class="i-close" />
-      <span class="sr-only">Menu</span>
-    </button>
-
     <div class="nav-links" id="nav-links">
       {links.map((l) => (
         <a href={l.href}>{l.label}</a>
@@ -55,6 +49,24 @@ const links = [
       <a class="btn btn-wa btn-sm nav-cta" href={whatsappLink()} target="_blank" rel="noopener noreferrer">
         <Icon name="whatsapp" /> Order on WhatsApp
       </a>
+    </div>
+
+    <div class="nav-actions">
+      {/* Shows the current theme's icon; the label names the action. The script keeps both in sync. */}
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Switch to dark theme"
+        title="Switch to dark theme"
+      >
+        <Icon name="sun" class="i-sun" />
+        <Icon name="moon" class="i-moon" />
+      </button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+        <Icon name="menu" class="i-open" />
+        <Icon name="close" class="i-close" />
+        <span class="sr-only">Menu</span>
+      </button>
     </div>
   </nav>
 </header>
@@ -94,14 +106,14 @@ const links = [
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(255, 250, 240, 0.86);
+    background: rgba(var(--cream-rgb), 0.86);
     backdrop-filter: saturate(160%) blur(12px);
     -webkit-backdrop-filter: saturate(160%) blur(12px);
     border-bottom: 1px solid var(--line);
     transition: box-shadow 0.3s var(--ease);
   }
   .site-header.scrolled {
-    box-shadow: 0 8px 30px -12px rgba(122, 10, 14, 0.25);
+    box-shadow: 0 8px 30px -12px rgba(var(--shadow-rgb), 0.25);
   }
   /* Compact the brand with a transform only. Changing the header's real height on scroll
      makes Chrome's scroll anchoring shift scrollY, which re-toggles the class — a flicker loop. */
@@ -144,7 +156,7 @@ const links = [
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.15rem;
-    color: var(--maroon);
+    color: var(--heading);
     letter-spacing: 0.01em;
   }
   .brand-tag {
@@ -159,6 +171,7 @@ const links = [
     display: flex;
     align-items: center;
     gap: 4px;
+    margin-left: auto; /* keeps links + CTA on the right, next to the theme toggle */
   }
   .nav-links > a:not(.btn) {
     position: relative;
@@ -174,10 +187,51 @@ const links = [
   }
   .nav-links > a:not(.btn):hover {
     background: var(--cream-2);
-    color: var(--maroon);
+    color: var(--heading);
   }
   .nav-cta {
     margin-left: 10px;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+  }
+  .theme-toggle {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--heading);
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      transform 0.2s var(--ease);
+  }
+  .theme-toggle:hover {
+    border-color: var(--gold);
+    background: var(--cream-2);
+    transform: translateY(-1px);
+  }
+  .theme-toggle :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+  .theme-toggle :global(.i-moon) {
+    display: none;
+  }
+  :global([data-theme='dark']) .theme-toggle :global(.i-sun) {
+    display: none;
+  }
+  :global([data-theme='dark']) .theme-toggle :global(.i-moon) {
+    display: block;
   }
 
   .nav-toggle {
@@ -186,10 +240,10 @@ const links = [
     height: 46px;
     border-radius: 12px;
     border: 1px solid var(--line);
-    background: #fff;
+    background: var(--surface);
     cursor: pointer;
     place-items: center;
-    color: var(--maroon);
+    color: var(--heading);
   }
   .nav-toggle :global(.i-close) {
     display: none;
@@ -202,6 +256,18 @@ const links = [
   }
 
   @media (max-width: 860px) {
+    .nav {
+      gap: 12px;
+    }
+    .nav-actions {
+      gap: 6px;
+    }
+    /* Square it off to match the menu button beside it; 44px keeps a comfortable tap target. */
+    .theme-toggle {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
     .nav-toggle {
       display: grid;
     }
@@ -216,7 +282,7 @@ const links = [
       padding: 12px var(--gutter) 18px;
       background: var(--cream);
       border-bottom: 1px solid var(--line);
-      box-shadow: 0 20px 40px -20px rgba(122, 10, 14, 0.35);
+      box-shadow: 0 20px 40px -20px rgba(var(--shadow-rgb), 0.35);
       transform-origin: top;
       transform: scaleY(0.95);
       opacity: 0;
@@ -280,5 +346,39 @@ const links = [
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') setOpen(false);
     });
+  }
+
+  // Theme toggle. src/scripts/theme-init.js has already set data-theme before first paint;
+  // this flips it, remembers the choice, and follows the OS only until the user has chosen.
+  const themeBtn = document.querySelector<HTMLButtonElement>('.theme-toggle');
+  if (themeBtn) {
+    const root = document.documentElement;
+    const savedTheme = () => {
+      try {
+        return localStorage.getItem('theme');
+      } catch {
+        return null;
+      }
+    };
+    const apply = (theme: 'light' | 'dark') => {
+      root.dataset.theme = theme;
+      const text = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+      themeBtn.setAttribute('aria-label', text);
+      themeBtn.title = text;
+    };
+    themeBtn.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      apply(next);
+      try {
+        localStorage.setItem('theme', next);
+      } catch {
+        /* storage blocked: the choice still applies for this page */
+      }
+    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      const saved = savedTheme();
+      if (saved !== 'light' && saved !== 'dark') apply(e.matches ? 'dark' : 'light');
+    });
+    apply(root.dataset.theme === 'dark' ? 'dark' : 'light'); // sync the label with the init script
   }
 </script>
